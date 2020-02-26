@@ -1,0 +1,48 @@
+
+# Prosper Loan Data Exploration
+## by Roger McClain
+
+> For this Data Exploration I will be taking a look at the Prosper Loan Data set, which contains data about 113,937 loans with 81 variables for each of them. This includes things like loan amount, interest rate, current loan status, borrower income, etc. 
+
+### Multivariate/ first steps:
+> The main features that I am interested in in this dataset are which factors affect a loan's outcome status, what factors affect interest rate, and what types of differences occur when the loan is a large amount.
+
+> To this end, I have decided to focus on BorrowerAPR, credit grade, loan amount, stated income, and whether or not a loan is successful.
+
+> The first thing that I did was create a heatmap or correlations between the features of the dataset to see if I could spot anything interesting right at the start. Unfortunately this heatmap is quite large and difficult to parse so I ended up filtering it down to a more manageable size later on.
+
+> I then decided to move onto exploring the variables that I was particulary interested in, I took a look at the "LoanStatus" variable because I wanted to be able to tell if a loan was successful or not and that seemed to be the best way to capture that. It seemed that the majority of loans were current or completed, with relatively few being failed loans. 
+
+> Next I wanted to take a look at the "LoanOriginalAmount" variable so that I could try and see what sort of distribution this feature has, as well as seeing if I could spot some patterns. The variable seemed to be very skewed to the right, but after a logarithmic transformation I could see that the distribution seemed to be multimodal. My guess is this is because the loans are offered at various standard amounts (3000, 5000) as opposed to 3125.
+
+> Finally I wanted to take a look at how "BorrowerAPR" was distributed, and I discovered it was fairly normally distributed with an odd peak around 0.36. I suspect this peak could be because of some sort of a marketing deal or soemthing where a specific APR is guaranteed.
+
+### Bivariate/ next steps:
+> I decided to expand on my exploration of the "LoanStatus" variable by using a facetgrid to look at each of the categories vs the (log) of the loan amount. This further emphasied the fact that there seemed to be some fairly stadard amounts the the loans were given out for, as each of the graphs was multimodal with some regular peaks.
+
+> I then wanted to do some exploration via correlation so I decided to encode the categories of "LoanStatus" into the "Successful" or "Fail" categories, then Fail would = 0, and Successful = 1. In order to accomplish this I mapped the LoanStatus values of (Current, Completed, and FinalPaymentInProgress) as Successful or 1, and everything else as Fail or 0.
+
+> By this time I had noticed that graphing this number of rows was incredibly slow, so I took a random sample of 10000 rows for me to do the rest of the graphing on.
+
+> The first plot that I did with my new "LoanSuccessEncoded" variable was a violinplot vs "LoanOriginalAmount", which indicated that there seemed to be more low dollar amount loans that were unsuccessful compared to the successful ones. 
+
+> I then did a comparison of "CreditGrade" vs "LoanSuccess" via a clustered bar graph, the only thing of interest was that it seemed that there were very few people with AA or A credit grades that had an unsuccessful loan.
+
+> Next I moved onto the correlation that I created this encoded variable for and found.. nothing really. There didn't seem to be a good predictor for "LoanSuccess", the only features with strong relationships were things that would have a high correlation simply based on the fact that the loan was failing, things like "LoanCurrentDaysDelinquent" and "LP_GrossPrincipalLoss".
+
+> I was still interested in exploring APR though, so I also did a correlation on "BorrowerAPR" and found some interesting results. It seems that the "Prosper Rating" that they assign has the strongest relationship with APR (though it is a negative relationship)that they set, the "EstimatedLoss" also had a strong relationship which makes sense, since you would obviously assign a high APR to the riskiest loans. However paradoxically, "EstimatedEffectiveYield" and "EstimatedReturn" also had strong positive relationships, perhaps setting the high APR on a risky loan also means that they will estimate that they will still make money from the loan even if it fails?
+
+### Multivariate/ last steps:
+> I then moved onto a scatterplot comparing "LoanOriginalAmount, "BorrowerAPR" and "Prosper Rating" as a color encoding. I could see the relationship that I had already discovered where low Prosper Rating meant high APR, but I also noticed that the higher loan amounts were given out only to people with a good Prosper Rating.
+
+> I then attempted another heatmap of the dataset, but with anything with a weak relationship filtered out in order to improve visual clarity. Sadly it still was not of much use, simply restating correlations I had already discovered.
+
+> I then tried a 2d bar chart between "LoanSuccess", "CreditGrade" and the mean of "StatedMonthyIncome". It was interesting because it seemed to indicate that high income is not a good predictor of whether or not a loan will be successful, though it does seem to help someone get a better credit grade.
+
+### Final thoughts:
+> I was unable to find any variable that was a good predictor of whether or not a loan might be successful, though it did reinforce that if you have a good score with the lending company you will have lower APR. It also seemed as though the lending comapny has figured something out, as there EstimatedYield seemed high even on failed and risky loans.
+
+
+```python
+
+```
